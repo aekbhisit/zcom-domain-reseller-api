@@ -10,59 +10,59 @@ $obj = array(
 );
 $oModule = new domain_api($obj);
 $oOnamae = new core_api();
-// $app->post('/CreateUser',$oAuthOwnerIP($oModule),function() use ($app,$oModule) {
-// 	$allPostVars = $app->request->post();
-// 	if(!isset($allPostVars["username"])||!isset($allPostVars["password"])||!isset($allPostVars["ip_address"])) {
+$app->post('/CreateUser',$oAuthOwnerIP($oModule),function() use ($app,$oModule) {
+	$allPostVars = $app->request->post();
+	if(!isset($allPostVars["username"])||!isset($allPostVars["password"])||!isset($allPostVars["ip_address"])) {
 
-// 		$app->response->setStatus(404);
-// 		exit;
-// 	}
-// 	if(empty($allPostVars["username"])||$allPostVars["username"]==='') {
-// 		$app->response->setStatus(404);
-// 		exit;
-// 	}
-// 	if(empty($allPostVars["password"])||$allPostVars["password"]==='') {
-// 		$app->response->setStatus(404);
-// 		exit;
-// 	}
-// 	if(empty($allPostVars["ip_address"])||$allPostVars["ip_address"]==='') {
-// 		$app->response->setStatus(404);
-// 		exit;
-// 	}
-// 	$ip_address = $oModule->setString($allPostVars["ip_address"]);
-// 	$ip_remote_add = $oModule->setString($_SERVER['REMOTE_ADDR']);
-// 	$username = $oModule->setEncryptHashKey($oModule->setString($allPostVars["username"]));
-// 	$password = $oModule->setEncryptHashKey($oModule->setString($allPostVars["password"]));
-// 	$validation_username = $oModule->setOneCheckValidateUsername($username);
-// 	if(!empty($validation_username)) {
-// 		$app->response->setStatus(404);
-// 		exit;
-// 	}
-// 	$salt_key = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",35)),0,35);
-// 	$token = $oModule->setString($oModule->encrypt_blowfish($username.$password,$salt_key));
-// 	$salt_key = $oModule->setEncryptHashKey($oModule->setString($salt_key));
-// 	$last_update = date('Y-m-d H:i:s');
-// 	$expire_token = date($last_update,strtotime("+7 day"));
-// 	$data = array(
-// 		"username"=>"'$username'",
-// 		"password"=>"'$password'",
-// 		"salt_key"=>"'$salt_key'",
-// 		"token"=>"'$token'",
-// 		"premission_id"=>3,
-// 		"expire_token"=>"'$expire_token'",
-// 		"last_update"=>"'$last_update'",
-// 		"ip_allow"=>"'$ip_address'",
-// 		"ip_remote_add"=>"'$ip_remote_add'",
-// 	);
-// 	$response = $oModule->setOneSaveInsertOnamaiUsername($data);
-// 	if(isset($response)) {
-// 		$response = $oModule->getOneOnamaeUsername($response);
-// 		$res = array();
-// 		$res['result'] = 'ok';
-// 		$res['data'] = $response;
-// 		echo json_encode($res);
-// 	}
-// });
+		$app->response->setStatus(404);
+		exit;
+	}
+	if(empty($allPostVars["username"])||$allPostVars["username"]==='') {
+		$app->response->setStatus(404);
+		exit;
+	}
+	if(empty($allPostVars["password"])||$allPostVars["password"]==='') {
+		$app->response->setStatus(404);
+		exit;
+	}
+	if(empty($allPostVars["ip_address"])||$allPostVars["ip_address"]==='') {
+		$app->response->setStatus(404);
+		exit;
+	}
+	$ip_address = $oModule->setString($allPostVars["ip_address"]);
+	$ip_remote_add = $oModule->setString($_SERVER['REMOTE_ADDR']);
+	$username = $oModule->setEncryptHashKey($oModule->setString($allPostVars["username"]));
+	$password = $oModule->setEncryptHashKey($oModule->setString($allPostVars["password"]));
+	$validation_username = $oModule->setOneCheckValidateUsername($username);
+	if(!empty($validation_username)) {
+		$app->response->setStatus(404);
+		exit;
+	}
+	$salt_key = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",35)),0,35);
+	$token = $oModule->setString($oModule->encrypt_blowfish($username.$password,$salt_key));
+	$salt_key = $oModule->setEncryptHashKey($oModule->setString($salt_key));
+	$last_update = date('Y-m-d H:i:s');
+	$expire_token = date($last_update,strtotime("+7 day"));
+	$data = array(
+		"username"=>"'$username'",
+		"password"=>"'$password'",
+		"salt_key"=>"'$salt_key'",
+		"token"=>"'$token'",
+		"premission_id"=>3,
+		"expire_token"=>"'$expire_token'",
+		"last_update"=>"'$last_update'",
+		"ip_allow"=>"'$ip_address'",
+		"ip_remote_add"=>"'$ip_remote_add'",
+	);
+	$response = $oModule->setOneSaveInsertOnamaiUsername($data);
+	if(isset($response)) {
+		$response = $oModule->getOneOnamaeUsername($response);
+		$res = array();
+		$res['result'] = 'ok';
+		$res['data'] = $response;
+		echo json_encode($res);
+	}
+});
 $app->post('/GetToken',$oAuthIPGetToken($oModule),function() use ($app,$oModule) {
 	$resourceuri = $app->request->getResourceUri();
 	$task = explode('/',$resourceuri);
