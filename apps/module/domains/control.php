@@ -11,21 +11,31 @@ $obj = array(
 $oModule = new domain_api($obj);
 $oOnamae = new core_api();
 $app->post('/CreateUser',$oAuthOwnerIP($oModule),function() use ($app,$oModule) {
+	$resourceuri = $app->request->getResourceUri();
+	$task = explode('/',$resourceuri);
+	$task_name = $task[count($task)-1];
 	$allPostVars = $app->request->post();
 	if(!isset($allPostVars["username"])||!isset($allPostVars["password"])||!isset($allPostVars["ip_address"])) {
-
+		$status_text = 'Not isset username or password or ip_address';
+		$oModule->log_query_fail($task_name,$status_text);
 		$app->response->setStatus(404);
 		exit;
 	}
 	if(empty($allPostVars["username"])||$allPostVars["username"]==='') {
+		$status_text = 'Empty username';
+		$oModule->log_query_fail($task_name,$status_text);
 		$app->response->setStatus(404);
 		exit;
 	}
 	if(empty($allPostVars["password"])||$allPostVars["password"]==='') {
+		$status_text = 'Empty password';
+		$oModule->log_query_fail($task_name,$status_text);
 		$app->response->setStatus(404);
 		exit;
 	}
 	if(empty($allPostVars["ip_address"])||$allPostVars["ip_address"]==='') {
+		$status_text = 'Empty ip_address';
+		$oModule->log_query_fail($task_name,$status_text);
 		$app->response->setStatus(404);
 		exit;
 	}
