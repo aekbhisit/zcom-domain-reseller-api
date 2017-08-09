@@ -240,7 +240,6 @@ $oAuthIPExchangeToken = function ($oModule) {
 			if(!empty($response)) {
 				$ip_allow = $response['ip_allow'];
 				$ip_allow = explode(',',$ip_allow);
-				$req = $app->request;
 				if(in_array($req->getIp(),$ip_allow)) {
 					$data = array(
 						"action_type"=>"'Ip Allow ExchangeToken'",
@@ -300,10 +299,10 @@ $oAuthIPGetToken = function ($oModule) {
 			$username = $oModule->setEncryptHashKey($oModule->setString($post["username"]));
 			$password = $oModule->setEncryptHashKey($oModule->setString($post["password"]));
 			$response = $oModule->AuthsetOneCheckExpireToken_UsernameAuth($username,$password);
+			$req = $app->request;
 			if(!empty($response)) {
 				$ip_allow = $response['ip_allow'];
 				$ip_allow = explode(',',$ip_allow);
-				$req = $app->request;
 				if(in_array($req->getIp(),$ip_allow)) {
 					$data = array(
 						"action_type"=>"'Ip Allow GetToken'",
