@@ -41,10 +41,12 @@ $app->post('/CreateUser',$oAuthOwnerIP($oModule),function() use ($app,$oModule) 
 	}
 	$ip_address = $oModule->setString($allPostVars["ip_address"]);
 	$ip_remote_add = $oModule->setString($_SERVER['REMOTE_ADDR']);
-	$username = $oModule->setEncryptHashKey($oModule->setString($allPostVars["username"]));
-	$password = $oModule->setEncryptHashKey($oModule->setString($allPostVars["password"]));
+	$username = $oModule->setString($oModule->setEncryptHashKey($allPostVars["username"]));
+	$password = $oModule->setString($oModule->setEncryptHashKey($allPostVars["password"]));
 	$validation_username = $oModule->setOneCheckValidateUsername($username);
 	if(!empty($validation_username)) {
+		$status_text = 'Username Is Not validation';
+		$oModule->log_query_fail($task_name,$status_text);
 		$app->response->setStatus(404);
 		exit;
 	}
@@ -88,8 +90,8 @@ $app->post('/GetToken',$oAuthIPGetToken($oModule),function() use ($app,$oModule)
 		$oModule->log_query_fail($task_name,$status_text);
 		$app->halt(500);
 	}
-	$username = $oModule->setEncryptHashKey($oModule->setString($allPostVars["username"]));
-	$password = $oModule->setEncryptHashKey($oModule->setString($allPostVars["password"]));
+	$username = $oModule->setString($oModule->setEncryptHashKey($allPostVars["username"]));
+	$password = $oModule->setString($oModule->setEncryptHashKey($allPostVars["password"]));
 	$response = $oModule->getOneToken($username,$password);
 	if(!empty($response)) {
 		$res = array();

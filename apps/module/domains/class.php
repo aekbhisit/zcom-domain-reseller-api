@@ -70,7 +70,7 @@ class domain_api extends Database {
 		return $this->insertID();
 	}
 	public function AuthsetOneCheckExpireToken_UsernameAuth($username,$password) {
-		$this->sql = " select ip_allow from onamae_user where username = '$username' and username = '$password' ";
+		$this->sql = " select ip_allow from onamae_user where username = '$username' and password = '$password' ";
 		$this->select();
 		$rows = $this->getRows();
 		return $rows[0];

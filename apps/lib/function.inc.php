@@ -94,6 +94,18 @@ $oAuthOwnerIP = function ($oModule) {
 			$req = $app->request;
 			if($req->getIp()==='203.170.193.202') {
 				$app->response->setStatus(200);
+				$data = array(
+					"action_type"=>"'Request Create User'",
+					"host"=>"'".$req->getHost()."'",
+					"url"=>"'".$req->getUrl()."'",
+					"request_path"=>"'".$req->getPath()."'",
+					"ip_address"=>"'".$req->getIp()."'",
+					"referrer"=>"'".$req->getReferrer()."'",
+					"useragent"=>"'".$req->getUserAgent()."'",
+					"contentlength"=>"'".$req->getContentLength()."'",
+					"cdate"=>"NOW()"
+				);
+				$_SESSION['main_log_id'] = $oModule->main_log_ip_check($data);
 			} else {
 				$app->response->setStatus(404);
 				exit;
@@ -203,7 +215,6 @@ $oAuthIPExchangeToken = function ($oModule) {
 		if($app->request->getMethod()==='POST') {
 			$post = $app->request->post();
 			$req = $app->request;
-			$post = $app->request->post();
 			if(!isset($post['token'])) {
 				$data = array(
 					"action_type"=>"'Not Isset Token'",
@@ -296,8 +307,8 @@ $oAuthIPGetToken = function ($oModule) {
 		$app = \Slim\Slim::getInstance();
 		if($app->request->getMethod()==='POST') {
 			$post = $app->request->post();
-			$username = $oModule->setEncryptHashKey($oModule->setString($post["username"]));
-			$password = $oModule->setEncryptHashKey($oModule->setString($post["password"]));
+			$username = $oModule->setString($oModule->setEncryptHashKey($post["username"]));
+			$password = $oModule->setString($oModule->setEncryptHashKey($post["password"]));
 			$response = $oModule->AuthsetOneCheckExpireToken_UsernameAuth($username,$password);
 			$req = $app->request;
 			if(!empty($response)) {
